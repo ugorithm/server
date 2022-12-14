@@ -1,21 +1,54 @@
 const express = require('express');
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
+const mongoose = require("mongoose"); // mongodb library
+
+//routers
+const userRouter = require("./routes/users.js")
+const todoRouter = require("./routes/todo.js")
+const prTracker = require("./routes/prTracker.js")
+
+const db_uri = process.env['mongo_uri']
+
+// connect to mongodb
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const PORT = 6001;
+mongoose
+  .connect(db_uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+    console.log("CONNECTED TO DB")
+    
+  })
+  .catch((error) => console.log(`${error} did not connect`));
 
 const app = express();
 
-// plugins
-app.use(helmet.noSniff());
-app.use(bodyParser.json())
+// extensions
+app.use(helmet());
+app.use(express.json())
+app.use(bodyParser.urlencoded({ extended: false }));
 
+// routes
+app.use("/users", userRouter);
+app.use("/todo", todoRouter);
+app.use("/prTracker", prTracker)
 const port = 3000;
-const path = require('path');
 
+app.get("/", (req, res) => {
+  res.send("The Server")
+})
 
-app.get('/', (req, res) => {
-  res.send({"status": "active"})
+app.post("/task", (req, res) => {
+  const id = req.body.id;
+  const task = req.body.task;
+  res.end("Added todo item to database")
 })
 
 app.listen(port, (res, req) => {
   console.log(`Running on port ${port}`)
 })
+
