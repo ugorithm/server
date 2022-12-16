@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const mongoose = require("mongoose"); // mongodb library
+const cors = require("cors");
 
 //routers
 const userRouter = require("./routes/users.js")
@@ -28,14 +29,16 @@ mongoose
 const app = express();
 
 // extensions
-app.use(helmet());
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors({
+  origin: "https://3f51-81-104-171-200.eu.ngrok.io",
+}))
 
 // routes
 app.use("/users", userRouter);
 app.use("/todo", todoRouter);
-app.use("/prTracker", prTracker)
+app.use("/pr", prTracker)
 const port = 3000;
 
 app.get("/", (req, res) => {

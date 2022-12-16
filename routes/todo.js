@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 const Todo = require("../models/Todo.js");
 const mongoose = require("mongoose");
+const Users = require("../models/Users.js")
 
 router.use((req, res, next) => {
   console.log('Time: ', Date.now())
@@ -10,7 +11,7 @@ router.use((req, res, next) => {
 })
 
 router.get("/DB", (req, res) => {
-  Todo.find()
+  Users.find()
     .then((data) => {
       res.send(data);
     })

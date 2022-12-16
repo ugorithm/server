@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 const prTracker = require("../models/prTracker.js");
 const mongoose = require("mongoose");
+const Users = require("../models/Users.js");
 
 router.use((req, res, next) => {
   console.log('Time: ', Date.now())
@@ -10,28 +11,19 @@ router.use((req, res, next) => {
 })
 
 router.get("/DB", (req, res) => {
-  prTracker.find()
-       .then((data) => {
+  Users.find()
+    .then((data) => {
       res.send(data);
     })
 })
 
-router.post("/add", (req, res) => {
-    const squat = req.body.squat;
-    const bench = req.body.squat;
-    const deadlift = req.body.squat;
-    
-    const prTracker = new prTracker({
-        squat: squat,
-        bench: bench,
-        deadlift: deadlift
+router.post("/find", (req, res) => {
+  const name = req.body.username;
+
+  Users.findOne({"username": name})
+    .then((data) => {
+      res.send(data["pr"]);
     })
-    
-    prTracker.save()
-      .then((res) => {
-          console.log("Added todo to DB")
-      })
-    res.end("Added todo");
 })
 
 module.exports = router;
