@@ -4,9 +4,7 @@ const Users = require("../models/Users.js");
 const mongoose = require("mongoose");
 
 router.use((req, res, next) => {
-  
-  console.log('Time: ', Date.now());
-  console.log("someone sent a request");
+  console.log(`REQUEST FROM: ${req.headers['x-forwarded-for']}`)
   next();
 })
 
