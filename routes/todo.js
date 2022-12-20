@@ -31,15 +31,27 @@ router.post("/add", (req, res) => {
   const username = req.body.username;
   const todo = req.body.todo; // The todo they want to add
 
-  let todos = [];
+  let todos = []; // contains the todos they already had + todo they want to add
 
   Users.find({"username": username})
     .then((data) => {
-      todos = data[0]["todo"]
-      res.end(`${todos}`)
+      const dbTodos = data[0]["todo"]
+      todos = dbTodos; // the todos that already exists
+      todos.push(todo);
     })
 
-  { $push: { <todo>: , ... } }
+    const filter = { "username": username };
+    const update = { "todo": todos };
+
+    Users.findOneAndUpdate(filter, update)
+    .then(() => {
+      res.end(`Updated todos and added: ${todo}. Total: ${todos}`) // output
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+
+    
 })
 
 module.exports = router;
