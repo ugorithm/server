@@ -3,13 +3,14 @@ const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const mongoose = require("mongoose"); // mongodb library
 const cors = require("cors");
+require('dotenv').config();
 
 //routers
 const userRouter = require("./routes/users.js")
 const todoRouter = require("./routes/todo.js")
 const prTracker = require("./routes/prTracker.js")
 
-const db_uri = process.env['mongo_uri']
+const db_uri = process.env['mongo_uri'];
 
 // connect to mongodb
 const { MongoClient, ServerApiVersion } = require('mongodb');
