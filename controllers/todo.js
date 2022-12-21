@@ -1,7 +1,7 @@
 const Users = require("../models/Users");
 
 exports.viewDb = (req, res) => {
-  Users.find()
+  Users.find().select("username todo")
     .then((data) => {
       res.send(data);
     });
@@ -11,9 +11,10 @@ exports.findTodo = (req, res) => {
   const username = req.body.username;
 
     Users.find({"username": username})
-     .then((data) => {
+      .then((data) => {
         res.end(`${data[0]["todo"]}`);
-     })
+    })
+     
 };
 
 exports.addTodo = (req, res) => {
