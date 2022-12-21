@@ -1,6 +1,5 @@
 const express = require("express")
 const router = express.Router()
-const prTracker = require("../models/prTracker.js");
 const mongoose = require("mongoose");
 const Users = require("../models/Users.js");
 

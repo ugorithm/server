@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const Users = require("../models/Users.js");
 const mongoose = require("mongoose");
 
 router.use((req, res, next) => {
