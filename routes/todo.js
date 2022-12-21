@@ -25,29 +25,18 @@ router.post("/find", (req, res) => {
      })
 })
 
-// adding a todo to a user
 router.post("/add", (req, res) => {
-  const username = req.body.username;
-  const todo = req.body.todo; // The todo they want to add
+  const username = req.body.username; // their username
+  const todo = req.body.todo; // their todo to add
 
-  let todos = []; // contains the todos they already had + todo they want to add
-
-  Users.find({"username": username})
-    .then((data) => {
-      const dbTodos = data[0]["todo"]
-      todos = dbTodos; // the todos that already exists
-      todos.push(todo);
-
-    //this will add elements
-    Users.findOne({"username": username})
-      .then((user) => {
-          user.todo = todos;
-          user.save();
-          res.end(`Todo added: ${todos}`);
-    })
-
-    }).catch((err) => console.log(`!ERROR: ${err}!`))
-})
+  Users.findOneAndUpdate({"username": username},
+  {
+    $push: { // add their todo to the existing Array of their todo's
+      "todo": todo
+    },
+  }).then(() => res.end("Added todo"))
+    .catch((err) => console.log(`ERROR: ${err}`));
+});
 
 router.post("/delete", (req, res) => {
   const username = req.body.username
