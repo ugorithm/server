@@ -5,6 +5,8 @@ const mongoose = require("mongoose"); // mongodb library
 const cors = require("cors");
 require('dotenv').config();
 
+const Users = require("./models/Users.js")
+
 //routers
 const userRouter = require("./routes/users.js")
 const todoRouter = require("./routes/todo.js")
@@ -55,4 +57,5 @@ app.post("/task", (req, res) => {
 app.listen(port, (res, req) => {
   console.log(`Running on port ${port}`)
 })
+
 
