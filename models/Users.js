@@ -11,17 +11,15 @@ const nonReqInt = {
   required: false,
 };
 
-const prSchema = new mongoose.Schema({
-  squat: nonReqInt,
-  bench: nonReqInt,
-  deadlift: nonReqInt
-})
-
 const userSchema = new Schema({
-   username: reqString,
-   password: reqString,
+  username: reqString,
+  password: reqString,
   todo: [String],
-  prSchema: prSchema
+  pr: {
+    squat: nonReqInt,
+    bench: nonReqInt,
+    deadlift: nonReqInt
+  }
 });
 
 module.exports = mongoose.model("Users", userSchema);

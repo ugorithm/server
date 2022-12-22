@@ -33,6 +33,7 @@ const app = express();
 
 // extensions
 app.use(express.json())
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors({
   origin: "https://3f51-81-104-171-200.eu.ngrok.io",
