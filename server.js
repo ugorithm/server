@@ -34,9 +34,24 @@ const app = express();
 // extensions
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// CORS SETTINGS
+
+const allowedOrigins = ["localhost:5000", "https://todo.ugorithm.repl.co"];
+
 app.use(cors({
-  origin: "https://todo.ugorithm.repl.co",
-}))
+  origin: function(origin, callback){
+    // allow requests with no origin 
+    // (like mobile apps or curl requests)
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){
+      var msg = 'The CORS policy for this site does not ' +
+                'allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  }
+}));
 
 // routes
 app.use("/auth", userRouter);
