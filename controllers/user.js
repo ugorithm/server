@@ -1,4 +1,5 @@
 const Users = require("../models/Users");
+const bcrypt = require("bcrypt")
 
 exports.db = (req, res) => {
     Users.find()
@@ -7,15 +8,17 @@ exports.db = (req, res) => {
         })
 };
 
-exports.addUser = (req, res) => {
+exports.addUser = async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     const pr = req.body.pr;
     const todo = req.body.todo;
+
+    const hashedPassword = await bcrypt.hash(password, 10)
     
     const user = new Users({
       username: username,
-      password: password,
+      password: hashedPassword,
       todo: todo,
       pr: pr
     })
@@ -26,3 +29,4 @@ exports.addUser = (req, res) => {
       })
     res.end("Added user");
 }
+

@@ -8,7 +8,7 @@ require('dotenv').config();
 const Users = require("./models/Users.js")
 
 //routers
-const userRouter = require("./routes/users.js")
+const userRouter = require("./routes/auth.js")
 const todoRouter = require("./routes/todo.js")
 const prTracker = require("./routes/prTracker.js")
 
@@ -33,14 +33,13 @@ const app = express();
 
 // extensions
 app.use(express.json())
-app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors({
-  origin: "https://3f51-81-104-171-200.eu.ngrok.io",
+  origin: "https://todo.ugorithm.repl.co",
 }))
 
 // routes
-app.use("/users", userRouter);
+app.use("/auth", userRouter);
 app.use("/todo", todoRouter);
 app.use("/pr", prTracker)
 const port = 3000;
