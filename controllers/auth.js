@@ -1,32 +1,28 @@
 const Users = require("../models/Users.js");
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
+const asyncHandler = require("express-async-handler");
 
-exports.login = async (req, res) => { // temp address: https://b63b-81-104-171-200.eu.ngrok.io
+exports.login = asyncHandler(async (req, res) => {
 
     const username = req.body.username;
     const password = req.body.password;
-    
-    Users.find({"username": username})
-     .then((data) => {
-         const hashedPassword = data[0]["password"] //hashed password
-         
-         if (bcrypt.compareSync(password, hashedPassword)){
-            res.send({
-              "id": data[0]["_id"],
-              "username": username,
-              "password": password,
-              "hashedPass": hashedPassword
-            });
-         }
-         else {
-            res.send("login failed");
-         }
-         
-     }).catch((err) => console.log("ERROR"));
 
-}
+    const user = await Users.findOne({"username": username});
 
-exports.register = async (req, res) => {
+    if (user && (await bcrypt.compare(password, user.password))) { // user.password is the encrypted password
+      res.send({
+        _id: user.id,
+        username: user.username,
+        password: user.password,
+      })
+    } else {
+      res.status(400).send("Wrong username/password");
+      throw new Error("Wrong username/password");
+    }
+
+})
+
+exports.register = asyncHandler(async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     const pr = {
@@ -45,9 +41,8 @@ exports.register = async (req, res) => {
       pr: pr
     })
 
-    user.save()
-      .then((res) => {
-        console.log(`Added user ${username}`)
+    await user.save()
+      .then((i) => {
+        res.status(201).end("User created"); // code 201 means something is created
       })
-    res.end("Added user");
-}
+})

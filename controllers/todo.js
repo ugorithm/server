@@ -1,3 +1,4 @@
+const asyncHandler = require("express-async-handler");
 const Users = require("../models/Users");
 
 exports.viewDb = (req, res) => {
@@ -16,18 +17,18 @@ exports.findTodo = (req, res) => {
     })
 };
 
-exports.addTodo = (req, res) => {
+exports.addTodo = asyncHandler(async (req, res) => {
   const username = req.body.username; // their username
   const todo = req.body.todo; // their todo to add
 
-  Users.findOneAndUpdate({"username": username},
+  await Users.findOneAndUpdate({"username": username},
   {
     $push: { // add their todo to the existing Array of their todo's
       "todo": todo
     },
   }).then(() => res.end(`Added todo ${todo}`))
     .catch((err) => console.log(`ERROR: ${err}`));
-}
+})
 
 exports.deleteTodo = (req, res) => {
   const username = req.body.username
