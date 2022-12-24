@@ -6,7 +6,7 @@ const Users = require("../models/Users.js")
 const { viewDb, findTodo, addTodo, deleteTodo } = require("../controllers/todo");
 
 router.use((req, res, next) => {
-  console.log(`REQUEST FROM: ${req.headers['x-forwarded-for']}`)
+  console.log("TODO REQUEST")
   next()
 })
 

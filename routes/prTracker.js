@@ -6,8 +6,7 @@ const Users = require("../models/Users.js");
 const { db, findPR, updatePR } = require("../controllers/prTracker.js")
 
 router.use((req, res, next) => {
-  console.log('Time: ', Date.now())
-  console.log("someone sent a request")
+  console.log("PR TRACKER REQUEST")
   next()
 })
 
