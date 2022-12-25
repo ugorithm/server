@@ -21,7 +21,6 @@ exports.login = asyncHandler(async (req, res) => {
       res.status(400).send("Wrong username/password");
       throw new Error("Wrong username/password");
     }
-
 })
 
 const genToken = (id) => {
@@ -50,7 +49,7 @@ exports.register = asyncHandler(async (req, res) => {
     const userExists = await Users.findOne({username})
 
     if (userExists) {
-      res.status(406);
+      res.status(406); // Code 406: Not acceptable. Server is able to, but is not accepting the data.
       throw new Error("User already exists")
     }
 

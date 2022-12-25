@@ -3,7 +3,7 @@ const router = express.Router()
 const mongoose = require("mongoose");
 const Users = require("../models/Users.js");
 
-const { db, findPR, updatePR } = require("../controllers/prTracker.js")
+const { db, findPR, updatePR } = require("../controllers/prTrackerController.js")
 
 router.use((req, res, next) => {
   console.log("PR TRACKER REQUEST")
