@@ -2,6 +2,10 @@ const Users = require("../models/Users.js");
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
+
+const ACCESS_TOKEN_KEY = process.env["ACCESS_TOKEN_KEY"];
+const REFRESH_TOKEN_KEY = process.env["REFRESH_TOKEN_KEY"];
 
 exports.login = asyncHandler(async (req, res) => {
 
@@ -15,7 +19,8 @@ exports.login = asyncHandler(async (req, res) => {
         _id: user.id,
         username: user.username,
         password: user.password,
-        token: genToken(user._id)
+        access_key: genAccessToken(user._id),
+        refresh_key: genRefreshToken(user._id)
       })
     } else {
       res.status(400).send("Wrong username/password");
@@ -23,10 +28,15 @@ exports.login = asyncHandler(async (req, res) => {
     }
 })
 
-const genToken = (id) => {
-  const ENCRYPT_KEY="Key123LOL"; // make this .env later
-  return jwt.sign({id}, ENCRYPT_KEY, {
-    expiresIn: "4h", // 4 hours until user has to log in again
+const genAccessToken = (id) => {
+  return jwt.sign({id}, ACCESS_TOKEN_KEY, {
+    expiresIn: "5h", // after 5 hours, we request another access token
+  })
+}
+
+const genRefreshToken = (id) => {
+  return jwt.sign({id}, REFRESH_TOKEN_KEY, {
+    expiresIn: "30d" // they have to login again
   })
 }
 
@@ -64,6 +74,16 @@ exports.register = asyncHandler(async (req, res) => {
 
     await user.save()
       .then((i) => {
-        res.status(201).end("User created"); // code 201 means something is created
+        res.status(201).send("user created"); // code 201 means something is created
       })
 })
+
+exports.access_key = asyncHandler(async (req, res) => {
+  const refreshKey = req.body.refresh_key;
+  
+  const decodedKey = jwt.verify(refreshKey, REFRESH_TOKEN_KEY);
+  
+  res.status(201).send({
+    "access_key": genAccessToken(decodedKey.id)
+  });
+});

@@ -12,7 +12,7 @@ const { protectRoute } = require("../middleware/authMiddleware");
 // routes
 router.get("/db", viewDb);
 
-router.post("/find", findTodo);
+router.post("/find", protectRoute, findTodo);
 
 router.post("/add", protectRoute, addTodo);
 

@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const asyncHandler = require("express-async-handler");
 const Users = require("../models/Users.js");
 
-const { login, register } = require("../controllers/authController.js")
+const { login, register, access_key } = require("../controllers/authController.js")
 
 router.use((req, res, next) => {
   console.log(`AUTHORISATION REQUEST`)
@@ -26,6 +26,14 @@ router.get("/db", asyncHandler(async (req, res) => {
 // @access Private
 router.post("/register", register);
 
+// @desc Login a user
+// @route POST /auth/login
+// @access Private
 router.post("/login", login);
+
+// @desc Takes in refresh key to generate new access token
+// @route /auth/accesskey
+// @access Private
+router.post("/accesskey", access_key);
 
 module.exports = router;
