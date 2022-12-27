@@ -46,3 +46,8 @@ app.get("/", (req, res) => {
 app.listen(port, (res, req) => {
   console.log(`Server running on port ${port}`)
 });
+
+exports.handler = (req, res) => {
+  const { name = "World"} = req.query;
+  return res.send(`Hello ${name}!`);
+}
