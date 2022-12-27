@@ -80,6 +80,11 @@ exports.register = asyncHandler(async (req, res) => {
 
 exports.access_key = asyncHandler(async (req, res) => {
   const refreshKey = req.body.refresh_key;
+
+  if (!refreshKey) {
+    res.status(404).send("No refresh key")
+    console.log("No refresh key")
+  }
   
   const decodedKey = jwt.verify(refreshKey, REFRESH_TOKEN_KEY);
   
