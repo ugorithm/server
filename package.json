@@ -1,11 +1,14 @@
 {
-  "name": "flamboyantknowndesigner",
+  "name": "reworkserver",
   "version": "1.0.0",
-  "description": "Every new repl comes with a `.replit` and a `replit.nix` file that let you configure your repl to do just about anything in any language!",
+  "description": "CRUD REST API for ReWork. MERN stack.",
   "main": "server.js",
+  "engines": {
+    "node": "19.x"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
