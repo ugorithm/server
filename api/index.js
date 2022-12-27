@@ -30,7 +30,6 @@ const app = express();
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
-app.use(helmet());
 
 // routes
 app.use("/auth", userRouter);
@@ -45,3 +44,5 @@ app.get("/", (req, res) => {
 app.listen(port, (res, req) => {
   console.log(`Server running on port ${port}`)
 });
+
+module.exports = app;
