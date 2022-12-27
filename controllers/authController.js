@@ -84,6 +84,7 @@ exports.access_key = asyncHandler(async (req, res) => {
   if (!refreshKey) {
     res.status(404).send("No refresh key")
     console.log("No refresh key")
+    return;
   }
   
   const decodedKey = jwt.verify(refreshKey, REFRESH_TOKEN_KEY);
