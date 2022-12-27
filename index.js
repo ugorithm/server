@@ -6,9 +6,9 @@ const cors = require("cors");
 require('dotenv').config();
 
 //routers
-const userRouter = require("../routes/auth.js")
-const todoRouter = require("../routes/todo.js")
-const prTracker = require("../routes/prTracker.js")
+const userRouter = require("./routes/auth.js")
+const todoRouter = require("./routes/todo.js")
+const prTracker = require("./routes/prTracker.js")
 
 const db_uri = process.env['mongo_uri'];
 
@@ -47,7 +47,4 @@ app.listen(port, (res, req) => {
   console.log(`Server running on port ${port}`)
 });
 
-exports.handler = (req, res) => {
-  const { name = "World"} = req.query;
-  return res.send(`Hello ${name}!`);
-}
+module.exports = app;
