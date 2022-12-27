@@ -1,14 +1,11 @@
 {
   "name": "flamboyantknowndesigner",
   "version": "1.0.0",
-  "description": "CRUD REST API for ReWork. MERN stack.",
-  "main": "./api/index.js",
-  "engines": {
-    "node": "18.x"
-  },
+  "description": "Every new repl comes with a `.replit` and a `replit.nix` file that let you configure your repl to do just about anything in any language!",
+  "main": "server.js",
   "scripts": {
-    "start": "node ./api/index.js",
-    "dev": "nodemon index.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
