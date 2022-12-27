@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require("body-parser");
-const helmet = require("helmet");
 const mongoose = require("mongoose"); // mongodb library
 const cors = require("cors");
 require('dotenv').config();
