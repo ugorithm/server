@@ -78,6 +78,7 @@ exports.register = asyncHandler(async (req, res) => {
       })
 })
 
+// generate access key endpoint
 exports.access_key = asyncHandler(async (req, res) => {
   const refreshKey = req.body.refresh_key;
 

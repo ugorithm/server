@@ -35,7 +35,7 @@ app.use(cors());
 app.use("/auth", userRouter);
 app.use("/todo", todoRouter);
 app.use("/pr", prTracker)
-const port = 3000;
+const port = 3001;
 
 app.get("/", (req, res) => {
   res.send("Server dashboard")
