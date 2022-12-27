@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require("body-parser");
-const helmet = require("helmet");
 const mongoose = require("mongoose"); // mongodb library
 const cors = require("cors");
 require('dotenv').config();
@@ -31,7 +30,6 @@ const app = express();
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
-app.use(helmet());
 
 // routes
 app.use("/auth", userRouter);
