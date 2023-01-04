@@ -3,19 +3,19 @@ const router = express.Router()
 const mongoose = require("mongoose");
 const Users = require("../models/Users.js")
 
-const { viewDb, findTodo, addTodo, deleteTodo } = require("../controllers/todo");
+// controllers
+const { viewDb, findTodo, addTodo, deleteTodo } = require("../controllers/todoController");
 
-router.use((req, res, next) => {
-  console.log("TODO REQUEST")
-  next()
-})
+// middleware
+const { protectRoute } = require("../middleware/authMiddleware");
 
+// routes
 router.get("/db", viewDb);
 
-router.post("/find", findTodo);
+router.post("/find", protectRoute, findTodo);
 
-router.post("/add", addTodo);
+router.post("/add", protectRoute, addTodo);
 
-router.post("/delete", deleteTodo);
+router.post("/delete", protectRoute, deleteTodo);
 
 module.exports = router;
