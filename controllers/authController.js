@@ -21,7 +21,7 @@ exports.login = asyncHandler(async (req, res) => {
         password: user.password,
         access_key: genAccessToken(user._id),
         refresh_key: genRefreshToken(user._id)
-      })
+      }) // LOLOLO THIS IS SESSIONS
     } else {
       res.status(400).send("Wrong username/password");
       throw new Error("Wrong username/password");
