@@ -7,26 +7,32 @@ require("dotenv").config();
 const ACCESS_TOKEN_KEY = process.env["ACCESS_TOKEN_KEY"];
 const REFRESH_TOKEN_KEY = process.env["REFRESH_TOKEN_KEY"];
 
-exports.login = asyncHandler(async (req, res) => {
-
-    const username = req.body.username;
-    const password = req.body.password;
-
-    const user = await Users.findOne({"username": username});
-
-    if (user && (await bcrypt.compare(password, user.password))) { // user.password is the encrypted password
-      res.status(201).send({
-        _id: user.id,
-        username: user.username,
-        password: user.password,
-        access_key: genAccessToken(user._id),
-        refresh_key: genRefreshToken(user._id)
-      }) // LOLOLO THIS IS SESSIONS
+exports.login = asyncHandler(async(req, res) => {
+  const { username, password } = req.body;
+  if (username && password) {
+    if (req.session.authenticated) {
+      res.status(200).json(req.session)
     } else {
-      res.status(400).send("Wrong username/password");
-      throw new Error("Wrong username/password");
+      const user = await Users.find({"username": username});
+      if (!user) {
+        res.status(401).end("No user exists");
+      }
+      const result = await bcrypt.compare(password, user[0].password) // check if entered password = hashed password
+      if (result === true) { // password is correct
+        req.session.authenticated = true;
+        req.session.user = {
+          username,
+          password
+        };
+        res.json(req.session);
+      } else {
+        res.status(403).send({msg: "Wrong password"}) // wrong password
+      }
     }
-})
+  } else {
+    res.send("NO")
+  }
+});
 
 const genAccessToken = (id) => {
   return jwt.sign({id}, ACCESS_TOKEN_KEY, {
