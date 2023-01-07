@@ -34,7 +34,11 @@ const app = express();
 // extensions
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors());
+
+const corsConfig = {
+  credentials:true
+}
+app.use(cors(corsConfig));
 app.use(session({
   secret: "Test secret",
   cookie: { maxAge: 30000, httpOnly: false }, // change httpOnly to true on production

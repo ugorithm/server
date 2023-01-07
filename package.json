@@ -1,11 +1,11 @@
 {
-  "name": "flamboyantknowndesigner",
+  "name": "rework_server",
   "version": "1.0.0",
   "description": "Every new repl comes with a `.replit` and a `replit.nix` file that let you configure your repl to do just about anything in any language!",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "dev": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
