@@ -11,7 +11,7 @@ const protectRoute = asyncHandler(async (req, res, next) => {
 
     if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
         try {
-            token = req.headers.authorization.split(" ")[1]; // Turns header into array seperating between the space: Bearer token. Takes just token
+            token = req.headers.authorization.split(" ")[1]; // Bearer token
 
             //verify token
             const decoded = jwt.verify(token, ACCESS_TOKEN_KEY);
