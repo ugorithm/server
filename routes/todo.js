@@ -7,15 +7,15 @@ const Users = require("../models/Users.js")
 const { viewDb, findTodo, addTodo, deleteTodo } = require("../controllers/todoController");
 
 // middleware
-const { protectRoute } = require("../middleware/authMiddleware");
+const { checkAuth } = require("../middleware/authMiddleware");
 
 // routes
-router.get("/db", viewDb);
+router.get("/db", checkAuth, viewDb);
 
-router.post("/find", protectRoute, findTodo);
+router.post("/find", checkAuth, findTodo);
 
-router.post("/add", protectRoute, addTodo);
+router.post("/add", checkAuth, addTodo);
 
-router.post("/delete", protectRoute, deleteTodo);
+router.post("/delete", checkAuth, deleteTodo);
 
 module.exports = router;
