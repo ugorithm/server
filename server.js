@@ -41,7 +41,7 @@ const corsConfig = {
 app.use(cors(corsConfig));
 app.use(session({
   secret: "Test secret",
-  cookie: { maxAge: 30000, httpOnly: false }, // change httpOnly to true on production
+  cookie: { maxAge: 120000, httpOnly: false }, // change httpOnly to true on production
   saveUninitialized: false,
   store: store
 }));
