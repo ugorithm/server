@@ -7,38 +7,51 @@ require("dotenv").config();
 const ACCESS_TOKEN_KEY = process.env["ACCESS_TOKEN_KEY"];
 const REFRESH_TOKEN_KEY = process.env["REFRESH_TOKEN_KEY"];
 
-exports.login = asyncHandler(async (req, res) => {
-
-    const username = req.body.username;
-    const password = req.body.password;
-
-    const user = await Users.findOne({"username": username});
-
-    if (user && (await bcrypt.compare(password, user.password))) { // user.password is the encrypted password
-      res.status(201).send({
-        _id: user.id,
-        username: user.username,
-        password: user.password,
-        access_key: genAccessToken(user._id),
-        refresh_key: genRefreshToken(user._id)
-      })
+exports.login = asyncHandler(async(req, res) => {
+  const { username, password } = req.body;
+  if (username && password) {
+    if (req.session.authenticated) {
+      res.status(200).json(req.session)
     } else {
-      res.status(400).send("Wrong username/password");
-      throw new Error("Wrong username/password");
+      const user = await Users.find({"username": username});
+      const userID = user[0]._id;
+      const sessionID = req.sessionID;
+      if (!user) {
+        res.status(401).end("No user exists");
+      }
+      const result = await bcrypt.compare(password, user[0].password) // check if entered password = hashed password
+      if (result === true) { // password is correct
+        req.session.authenticated = true;
+
+        req.session.user = {
+          userID,
+          "SID": sessionID
+        };
+
+        res.setHeader("Access-Control-Allow-Origin", "*")
+        res.json(req.session);
+      } else {
+        res.status(401).send({msg: "Wrong password"}) // wrong password
+      }
     }
-})
+  } else {
+    res.send("NO")
+  }
+});
 
-const genAccessToken = (id) => {
-  return jwt.sign({id}, ACCESS_TOKEN_KEY, {
-    expiresIn: "5h", // after 5 hours, we request another access token
-  })
-}
-
-const genRefreshToken = (id) => {
-  return jwt.sign({id}, REFRESH_TOKEN_KEY, {
-    expiresIn: "30d" // they have to login again
-  })
-}
+exports.getSession = asyncHandler(async (req, res) => {
+  const { sessionID } = req.body;
+  req.sessionStore.get(sessionID, async (err, session) => {
+    if (err) console.log(err);
+    if (!session) {
+      res.status(200).json({"authenticated": false});
+    } else {
+      const userID = session.user.userID;
+      const user = await Users.findById(userID).select("_id username");
+      res.status(200).json({ userPayload: user, "authenticated": true });
+    }
+  });
+});
 
 exports.register = asyncHandler(async (req, res) => {
 
@@ -76,21 +89,4 @@ exports.register = asyncHandler(async (req, res) => {
       .then((i) => {
         res.status(201).send("user created"); // code 201 means something is created
       })
-})
-
-// generate access key endpoint
-exports.access_key = asyncHandler(async (req, res) => {
-  const refreshKey = req.body.refresh_key;
-
-  if (!refreshKey) {
-    res.status(404).send("No refresh key")
-    console.log("No refresh key")
-    return;
-  }
-  
-  const decodedKey = jwt.verify(refreshKey, REFRESH_TOKEN_KEY);
-  
-  res.status(201).send({
-    "access_key": genAccessToken(decodedKey.id)
-  });
 });
