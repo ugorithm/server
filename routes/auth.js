@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const asyncHandler = require("express-async-handler");
 const Users = require("../models/Users.js");
 
-const { login, getSession, register, access_key } = require("../controllers/authController.js")
+const { login, getSession, register } = require("../controllers/authController.js")
 
 router.use((req, res, next) => {
   console.log(`AUTHORISATION REQUEST`)
