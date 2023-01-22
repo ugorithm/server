@@ -19,15 +19,19 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const expressAsyncHandler = require('express-async-handler');
 const Users = require('./models/Users.js');
 const MONGO_PORT = 6001;
-mongoose
-  .connect(db_uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    app.listen(MONGO_PORT, () => console.log(`Mongo DB Running on: ${MONGO_PORT}`));
-  })
-  .catch((error) => console.log(`${error} did not connect`));
+// mongoose
+//   .connect(db_uri, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => {
+//     app.listen(MONGO_PORT, () => console.log(`Mongo DB Running on: ${MONGO_PORT}`));
+//   })
+//   .catch((error) => console.log(`${error} did not connect`));
+
+mongoose.connect(db_uri).then(() => {
+  console.log("Connected to db")
+}).catch((err) => console.log("Error: " + err))
 
 const app = express();
 
@@ -55,8 +59,6 @@ const port = 3001;
 app.get("/", (req, res) => {
   res.send("Server dashboard")
 });
-
-
 
 app.listen(port, (res, req) => {
   console.log(`Server running on port ${port}`)
