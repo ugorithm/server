@@ -1,11 +1,14 @@
 const asyncHandler = require("express-async-handler");
 const Users = require("../models/Users");
+const user = require("../middleware/authMiddleware.js")
 
 exports.viewDb = (req, res) => {
   Users.find().select("username password todo")
     .then((data) => {
       res.send(data);
     });
+
+  console.log(req.userID)
 };
 
 exports.findTodo = (req, res) => {

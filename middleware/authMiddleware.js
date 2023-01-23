@@ -7,8 +7,17 @@ const checkAuth = asyncHandler(async (req, res, next) => {
     if (!req.headers.authorization) {
         res.send("Unauthorized")
     };
-    const token = req.headers.authorization?.split(" ")[1]
-    console.log(token);
+    const SID = req.headers.authorization?.split(" ")[1]
+
+    req.sessionStore.get(SID, async (err, session) => {
+      if (!session) {
+        res.status(401).json({"authenticated": false})
+      } else {
+        userID = session.user.userID;
+        return userID
+        }
+    })
+  
     next();
 });
 
