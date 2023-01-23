@@ -10,12 +10,12 @@ const { viewDb, findTodo, addTodo, deleteTodo } = require("../controllers/todoCo
 const { checkAuth } = require("../middleware/authMiddleware");
 
 // routes
-router.get("/db", checkAuth, viewDb);
+router.get("/db", viewDb);
 
-router.post("/find", checkAuth, findTodo);
+router.post("/find", findTodo);
 
-router.post("/add", checkAuth, addTodo);
+router.post("/add", addTodo);
 
-router.post("/delete", checkAuth, deleteTodo);
+router.post("/delete", deleteTodo);
 
 module.exports = router;

@@ -18,6 +18,7 @@ const db_uri = process.env['mongo_uri'];
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const expressAsyncHandler = require('express-async-handler');
 const Users = require('./models/Users.js');
+const { checkAuth } = require('./middleware/authMiddleware.js');
 const MONGO_PORT = 6001;
 mongoose
   .connect(db_uri, {
@@ -48,8 +49,8 @@ app.use(session({
 
 // routes
 app.use("/auth", userRouter);
-app.use("/todo", todoRouter);
-app.use("/pr", prTracker)
+app.use("/todo", checkAuth, todoRouter);
+app.use("/pr", checkAuth, prTracker);
 const port = 3001;
 
 app.get("/", (req, res) => {

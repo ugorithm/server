@@ -44,7 +44,7 @@ exports.getSession = asyncHandler(async (req, res) => {
   req.sessionStore.get(sessionID, async (err, session) => {
     if (err) console.log(err);
     if (!session) {
-      res.status(200).json({"authenticated": false});
+      res.status(401).json({"authenticated": false});
     } else {
       const userID = session.user.userID;
       const user = await Users.findById(userID).select("_id username");
