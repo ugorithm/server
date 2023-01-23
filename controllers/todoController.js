@@ -1,24 +1,20 @@
 const asyncHandler = require("express-async-handler");
 const Users = require("../models/Users");
 const user = require("../middleware/authMiddleware.js")
+const express = require("express")
 
-exports.viewDb = (req, res) => {
-  Users.find().select("username password todo")
-    .then((data) => {
-      res.send(data);
-    });
+exports.viewDb = asyncHandler(async (req, res) => {
+  // Users.find().select("username password todo")
+  //   .then((data) => {
+  //     res.send(data);
+  //   });
+});
 
-  console.log(req.userID)
-};
-
-exports.findTodo = (req, res) => {
-  const username = req.body.username;
-
-    Users.find({"username": username})
-      .then((data) => {
-        res.end(`${data[0]["todo"]}`);
-    })
-};
+exports.findTodo = asyncHandler(async (req, res) => {
+  const userID = req.userID;
+  const user = await Users.findById(userID).select("-password")
+  res.send(user);
+});
 
 exports.addTodo = asyncHandler(async (req, res) => {
   const username = req.body.username; // their username
